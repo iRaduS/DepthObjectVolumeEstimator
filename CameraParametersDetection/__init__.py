@@ -5,15 +5,17 @@ import numpy as np
 
 
 def load_calibration_images_from_dataset():
-    image_paths = glob.glob(os.path.join("../datasets/CameraParametersCalibration", "*.png"))
-    apply_transformation = lambda image: cv.cvtColor(image, cv.BGR2GRAY)
+    image_paths = glob.glob(os.path.join("./datasets/CameraParametersCalibration", "*.JPG"))
+    if len(image_paths) == 0:
+        raise Exception('Image directory of /datasets/CameraParametersCalibration couldn\'t find any .JPG files.')
 
-    images = np.array([cv.imread(image_path) for image_path in image_paths])
-    return apply_transformation(images)
+    return np.array([
+        cv.cvtColor(cv.imread(image_path), cv.COLOR_BGR2GRAY) for image_path in image_paths
+    ])
 
 
 def load_calibration_settings_from_env():
     return {
-        "chessboard_shape": (24, 17),
-        "picture_shape": (1440, 1080),
+        "chessboard_shape": (7, 6),
+        "picture_shape": (4032, 3024),
     }
